@@ -1,0 +1,7 @@
+dj-database-url
+django
+django-bootstrap4
+django-environ
+gunicorn
+psycopg2
+whitenoise
