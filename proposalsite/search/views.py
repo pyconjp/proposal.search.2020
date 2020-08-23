@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Talk
+
+
+def list_talks(request):
+    talks = Talk.objects.all().order_by("sessionize_id")
+    context = {"talks": talks}
+    return render(request, "search/list_talks.html", context)
