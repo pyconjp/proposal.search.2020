@@ -13,6 +13,15 @@ class Command(BaseCommand):
         parser.add_argument("csv_path")
 
     def handle(self, *args, **options):
+        # The input value from the CSV file is equal to one of the labels.
+        # Convert it to a value to be stored in the DB.
+        speak_language_converter = {
+            label: value for value, label in Talk.SpeakingLanguage.choices
+        }
+        slide_language_converter = {
+            label: value for value, label in Talk.SlideLanguage.choices
+        }
+
         with open(options["csv_path"]) as f:
             reader = csv.DictReader(f)
             with transaction.atomic():
@@ -20,13 +29,13 @@ class Command(BaseCommand):
                 talks.delete()
 
                 for row in reader:
-                    # トーク・招待講演以外はスキップする
+                    # Skip all but the talks / invited talks.
                     if not row["no"]:
                         continue
                     Talk.objects.create(
                         sessionize_id=row["id"],
-                        day=int(row["day"]),
-                        no=int(row["no"]),
+                        day=row["day"],
+                        no=row["no"],
                         room=row["room"],
                         title=row["title"],
                         description=row["description"],
@@ -35,8 +44,12 @@ class Command(BaseCommand):
                         category=row["track"],
                         audience_python_level=row["audience_python_level"],
                         audience_domain_expertise=row["audience_expertise"],
-                        speaking_language=row["lang_of_talk"],
-                        slide_language=row["lang_of_slide"],
+                        speaking_language=speak_language_converter[
+                            row["lang_of_talk"]
+                        ],
+                        slide_language=slide_language_converter[
+                            row["lang_of_slide"]
+                        ],
                         prerequisite_knowledge=row["prerequisite_knowledge"],
                         audience_take_away=row["audience_takeaway"],
                     )
