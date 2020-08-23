@@ -1,0 +1,43 @@
+{% load bootstrap4 %}
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+      {% block title %}Search talks of PyCon JP 2020{% endblock %}
+    </title>
+    {% bootstrap_css %}
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="Search talks of PyCon JP 2020">
+    <meta property="og:description" content="PyCon JP 2020のトーク検索用アプリです。May you find a great talk.">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'search:list_talks' %}">Search app</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav text-right">
+          <li class="nav-item">
+            <a class="nav-link" href="https://pycon.jp/2020/" rel="noopener">PyCon JP 2020</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <main role="main" class="container">
+      {% block content %}
+      {% endblock content %}
+    </main>
+    {% bootstrap_javascript jquery="slim" %}
+  </body>
+</html>
