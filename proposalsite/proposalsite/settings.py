@@ -137,3 +137,9 @@ DATABASES["default"].update(db_from_env)
 
 # My App settings
 ITEM_PER_PAGE = 5
+
+# for Django Debug Toolbar
+if DEBUG:
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+    INTERNAL_IPS = ["127.0.0.1"]
