@@ -1,0 +1,81 @@
+{% extends "search/base.html" %}
+{% load custom_tags %}
+
+{% block content %}
+  <table class="table table-striped">
+    <tbody>
+      {% for talk in page_obj %}
+        <tr>
+          <td>
+            <div class="my-1">
+              Day{{ talk.day }}
+              start {{ talk.start_at }}-
+              {{ talk.duration }}
+              <span class="badge badge-info">{{ talk.category }}</span>
+            </div>
+            <div class="mt-1 mb-3">
+              at {{ talk.room }},
+              for <span class="badge badge-info">{{ talk.audience_python_level }}</span> /
+              <span class="badge badge-info">{{ talk.audience_domain_expertise }}</span> domain expertise,
+              speaking: <span class="badge badge-info">{{ talk.speaking_language }}</span>,
+              slide: <span class="badge badge-info">{{ talk.slide_language }}</span>
+            </div class="my-1">
+            <div>
+              <h4>{{ talk.title }}</h4>
+            </div>
+          </td>
+          <td>
+            <div class="pt-5">
+              <a href="https://pycon.jp/2020/timetable/?id={{ talk.sessionize_id }}" target="_blank" rel="noopener">Detail</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link"
+            href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' 1 %}">
+          1
+        </a>
+      </li>
+
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link"
+              href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' page_obj.previous_page_number %}"
+              aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      <li class="page-item active">
+        <a class="page-link"
+            href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' page_obj.number %}">
+          {{ page_obj.number }}
+        </a>
+      </li>
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link"
+              href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' page_obj.next_page_number %}"
+              aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      <li class="page-item">
+        <a class="page-link"
+            href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' page_obj.paginator.num_pages %}">
+          {{ page_obj.paginator.num_pages }} (Last)
+        </a>
+      </li>
+    </ul>
+  </nav>
+{% endblock content %}

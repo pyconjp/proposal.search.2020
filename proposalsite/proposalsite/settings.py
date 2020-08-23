@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # My apps
+    "search.apps.SearchConfig",
+    # 3rd party apps
+    "bootstrap4",
 ]
 
 MIDDLEWARE = [
@@ -130,3 +134,12 @@ if DEBUG:
 else:
     db_from_env = dj_database_url.config(conn_max_age=500, ssl_require=True)
 DATABASES["default"].update(db_from_env)
+
+# My App settings
+ITEM_PER_PAGE = 5
+
+# for Django Debug Toolbar
+if DEBUG:
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+    INTERNAL_IPS = ["127.0.0.1"]
