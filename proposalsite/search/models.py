@@ -1,4 +1,21 @@
+import re
+
 from django.db import models
+
+
+day_no_to_start_map = {
+    (1, 1): "11:50",
+    (1, 2): "13:45",
+    (1, 3): "14:50",
+    (1, 4): "16:00",
+    (1, 5): "16:50",
+    (1, 6): "18:00",
+    (2, 1): "11:50",
+    (2, 2): "14:00",
+    (2, 3): "14:50",
+    (2, 4): "16:00",
+    (2, 5): "16:30",
+}
 
 
 class Talk(models.Model):
@@ -88,3 +105,10 @@ class Talk(models.Model):
 
     def __str__(self):
         return f"{self.sessionize_id} {self.day}日目 {self.title}"
+
+    def start_at(self):
+        return day_no_to_start_map[(self.day, self.no)]
+
+    def duration(self):
+        matched_durations = re.findall(r"\((.*min)\)", self.talk_format)
+        return matched_durations[0]

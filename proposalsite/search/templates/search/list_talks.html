@@ -1,0 +1,35 @@
+{% extends "search/base.html" %}
+
+{% block content %}
+  <table class="table table-striped">
+    <tbody>
+      {% for talk in talks %}
+        <tr>
+          <td>
+            <div class="my-1">
+              Day{{ talk.day }}
+              start {{ talk.start_at }}-
+              {{ talk.duration }}
+              <span class="badge badge-info">{{ talk.category }}</span>
+            </div>
+            <div class="mt-1 mb-3">
+              at {{ talk.room }},
+              for <span class="badge badge-info">{{ talk.audience_python_level }}</span> /
+              <span class="badge badge-info">{{ talk.audience_domain_expertise }}</span> domain expertise,
+              speaking: <span class="badge badge-info">{{ talk.speaking_language }}</span>,
+              slide: <span class="badge badge-info">{{ talk.slide_language }}</span>
+            </div class="my-1">
+            <div>
+              <h4>{{ talk.title }}</h4>
+            </div>
+          </td>
+          <td>
+            <div class="pt-5">
+              <a href="https://pycon.jp/2020/timetable/?id={{ talk.sessionize_id }}" target="_blank" rel="noopener">Detail</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
