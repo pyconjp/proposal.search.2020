@@ -1,9 +1,10 @@
 {% extends "search/base.html" %}
+{% load custom_tags %}
 
 {% block content %}
   <table class="table table-striped">
     <tbody>
-      {% for talk in talks %}
+      {% for talk in page_obj %}
         <tr>
           <td>
             <div class="my-1">
@@ -32,4 +33,49 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link"
+            href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' 1 %}">
+          1
+        </a>
+      </li>
+
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link"
+              href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' page_obj.previous_page_number %}"
+              aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      <li class="page-item active">
+        <a class="page-link"
+            href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' page_obj.number %}">
+          {{ page_obj.number }}
+        </a>
+      </li>
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link"
+              href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' page_obj.next_page_number %}"
+              aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% endif %}
+
+      <li class="page-item">
+        <a class="page-link"
+            href="{% url 'search:list_talks' %}?{% add_query_to_request request 'page' page_obj.paginator.num_pages %}">
+          {{ page_obj.paginator.num_pages }} (Last)
+        </a>
+      </li>
+    </ul>
+  </nav>
 {% endblock content %}
