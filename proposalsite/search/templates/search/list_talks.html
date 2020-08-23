@@ -25,14 +25,41 @@
               Day{{ talk.day }}
               start {{ talk.start_at }}-
               {{ talk.duration }}
-              <span class="badge badge-info">{{ talk.category }}</span>
+              <span class="badge badge-secondary">{{ talk.category }}</span>
             </div>
             <div class="mt-1 mb-3">
               at {{ talk.room }},
-              for <span class="badge badge-info">{{ talk.audience_python_level }}</span> /
-              <span class="badge badge-info">{{ talk.audience_domain_expertise }}</span> domain expertise,
-              speaking: <span class="badge badge-info">{{ talk.speaking_language }}</span>,
-              slide: <span class="badge badge-info">{{ talk.slide_language }}</span>
+              for
+              {% if talk.audience_python_level == "Beginner" %}
+                <span class="badge badge-success">
+              {% elif talk.audience_python_level == "Intermediate" %}
+                <span class="badge badge-warning">
+              {% elif talk.audience_python_level == "Advanced" %}
+                <span class="badge badge-danger">
+              {% endif %}
+                  {{ talk.audience_python_level }}</span> /
+              {% if talk.audience_domain_expertise == "0%" %}
+                <span class="badge badge-success">
+              {% elif talk.audience_domain_expertise == "50%" %}
+                <span class="badge badge-warning">
+              {% elif talk.audience_domain_expertise == "100%" %}
+                <span class="badge badge-danger">
+              {% endif %}
+                  {{ talk.audience_domain_expertise }}</span> domain expertise,
+              speaking:
+              {% if talk.speaking_language == "ja" %}
+                <span class="badge badge-danger">
+              {% else %}
+                <span class="badge badge-info">
+              {% endif %}
+                  {{ talk.speaking_language }}</span>,
+              slide:
+              {% if talk.slide_language == "ja" %}
+                <span class="badge badge-danger">
+              {% else %}
+                <span class="badge badge-info">
+              {% endif %}
+                  {{ talk.slide_language }}</span>
             </div class="my-1">
             <div>
               <h4>{{ talk.title }}</h4>
