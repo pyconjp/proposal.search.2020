@@ -2,6 +2,20 @@
 {% load custom_tags %}
 
 {% block content %}
+  <form>
+    <div class="form-group form-check col-md-4">
+      {% with specified_only_english=request.GET|parse_search_parameter:"only_english" %}
+        <input class="form-check-input" type="checkbox" id="filter_only_english" name="only_english" value="true"
+          {% if specified_only_english == "true" %}
+            checked
+          {% endif %}
+        >
+      {% endwith %}
+      <label class="form-check-label" for="filter_only_english">Only talks you can enjoy in English.</label>
+    </div>
+    <button type="submit" class="btn btn-primary mb-4">Filter</button>
+  </form>
+
   <table class="table table-striped">
     <tbody>
       {% for talk in page_obj %}
