@@ -1,8 +1,20 @@
 from django.conf import settings
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render
 
 from .models import Talk
+
+
+def _filter_talks(talks, get_request):
+    specified_only_english = get_request.get("only_english")
+    if specified_only_english:
+        talks = talks.filter(
+            Q(speaking_language="en")
+            | Q(slide_language="en")
+            | Q(slide_language="bo")
+        )
+    return talks
 
 
 def _retrieve_page(paginator, get_request):
@@ -15,6 +27,7 @@ def _retrieve_page(paginator, get_request):
 
 def list_talks(request):
     talks = Talk.objects.all().order_by("sessionize_id")
+    talks = _filter_talks(talks, request.GET)
 
     paginator = Paginator(talks, settings.ITEM_PER_PAGE)
     page_obj = _retrieve_page(paginator, request.GET)
