@@ -14,6 +14,9 @@ def _filter_talks(talks, get_request):
             | Q(slide_language="en")
             | Q(slide_language="bo")
         )
+    category = get_request.get("category")
+    if category:
+        talks = talks.filter(category=category)
     return talks
 
 
@@ -32,5 +35,5 @@ def list_talks(request):
     paginator = Paginator(talks, settings.ITEM_PER_PAGE)
     page_obj = _retrieve_page(paginator, request.GET)
 
-    context = {"page_obj": page_obj}
+    context = {"page_obj": page_obj, "categories": Talk.TalkCategory.values}
     return render(request, "search/list_talks.html", context)
